@@ -1,6 +1,8 @@
 name: Build and Deploy
 on:
   pull_request:
+
+concurrency: preview-${{ github.ref }}
   
 permissions:
   contents: write
@@ -24,7 +26,14 @@ jobs:
       #     npm ci
       #     npm run build
       - name: Deploy 🚀
-        uses : actions/upload-pages-artifact@v1
+        uses: rossjrw/pr-preview-action@v1
+        # uses: actions/upload-pages-artifact@v1 
+        # 깃헙 페이지 배포는 됨 이걸로
+        with: 
+          source-dir: .
+          preview-branch: gh-pages
+          umbrella-dir: pr-preview
+          actions: auto
       # - name: Deploy 🚀
       #   uses: JamesIves/github-pages-deploy-action@v4
       #   with:
