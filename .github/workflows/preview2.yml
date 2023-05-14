@@ -30,6 +30,8 @@ jobs:
         with: 
           target_branch: gh-pages
           build_dir: .
+        env:
+          GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
         # 깃헙 페이지 배포는 됨 이걸로
         # uses: actions/upload-pages-artifact@v1 
         # uses: rossjrw/pr-preview-action@v1
