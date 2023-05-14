@@ -1,0 +1,43 @@
+name: Build and Deploy
+on:
+  pull_request:
+
+concurrency: preview-${{ github.ref }}
+  
+permissions:
+  contents: write
+jobs:
+  build-and-deploy:
+    concurrency: ci-${{ github.ref }} # Recommended if you intend to make multiple deployments in quick succession.
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+
+      - name: Build with jekyll
+        uses : actions/jekyll-build-pages@v1
+        # with:
+        #   source: .
+        #   destination: ./_site
+        #   future: false
+        #   build_revision
+      # - name: Install and Build 🔧 # This example project is built using npm and outputs the result to the 'build' folder. Replace with the commands required to build your project, or remove this step entirely if your site is pre-built.
+      #   run: |
+      #     npm ci
+      #     npm run build
+      - name: Deploy 🚀
+        uses: crazy-max/ghaction-github-pages@v1
+        with: 
+          target_branch: gh-pages
+          build_dir: .
+        env:
+          GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
+        # 깃헙 페이지 배포는 됨 이걸로
+        # uses: actions/upload-pages-artifact@v1 
+        # uses: rossjrw/pr-preview-action@v1
+        # with: 
+          # source-dir: .
+          # preview-branch: gh-pages
+          # umbrella-dir: pr-preview
+          # actions: auto
+      
